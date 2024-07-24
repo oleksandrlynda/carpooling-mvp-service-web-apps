@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date & Time Picker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .container h2 {
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .submit-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pick Date & Time</h2>
+        <div class="input-group">
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date">
+        </div>
+        <div class="input-group">
+            <label for="time">Time:</label>
+            <input type="time" id="time" name="time">
+        </div>
+        <button class="submit-btn" onclick="submitDateTime()">Submit</button>
+    </div>
+    
+    <script src="https://telegram.org/js/telegram-web-app.js">
+        function submitDateTime() {
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+
+            if (date && time) {
+                // Combine date and time
+                const dateTime = date + ' ' + time;
+                
+                // Pass the selected date and time back to the Telegram bot
+                // Telegram Web Apps provide a way to pass data back using `window.Telegram.WebApp`
+                if (window.Telegram.WebApp) {
+                    window.Telegram.WebApp.close(); // Close the web app
+                    window.Telegram.WebApp.sendData(dateTime); // Send data back to the bot
+                } else {
+                    alert('Telegram WebApp API not found. Date and time cannot be sent.');
+                }
+            } else {
+                alert('Please select both date and time.');
+            }
+        }
+    </script>
+</body>
+</html>
+
