@@ -49,6 +49,16 @@
         .submit-btn:hover {
             background-color: #0056b3;
         }
+        .error-popup {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #f5c6cb;
+            display: none;
+            margin-top: 20px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -63,30 +73,37 @@
             <input type="time" id="time" name="time">
         </div>
         <button class="submit-btn" onclick="submitDateTime()">Submit</button>
+        <div id="error-popup" class="error-popup"></div>
     </div>
     
-    <script src="https://telegram.org/js/telegram-web-app.js">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
         function submitDateTime() {
             const date = document.getElementById('date').value;
             const time = document.getElementById('time').value;
+            const errorPopup = document.getElementById('error-popup');
 
-            if (date && time) {
-                // Combine date and time
-                const dateTime = date + ' ' + time;
-                
-                // Pass the selected date and time back to the Telegram bot
-                // Telegram Web Apps provide a way to pass data back using `window.Telegram.WebApp`
-                if (window.Telegram.WebApp) {
-                    window.Telegram.WebApp.close(); // Close the web app
-                    window.Telegram.WebApp.sendData(dateTime); // Send data back to the bot
+            try {
+                if (date && time) {
+                    // Combine date and time
+                    const dateTime = date + ' ' + time;
+                    
+                    // Pass the selected date and time back to the Telegram bot
+                    // Telegram Web Apps provide a way to pass data back using `window.Telegram.WebApp`
+                    if (window.Telegram.WebApp) {
+                        window.Telegram.WebApp.close(); // Close the web app
+                        window.Telegram.WebApp.sendData(dateTime); // Send data back to the bot
+                    } else {
+                        throw new Error('Telegram WebApp API not found. Date and time cannot be sent.');
+                    }
                 } else {
-                    alert('Telegram WebApp API not found. Date and time cannot be sent.');
+                    throw new Error('Please select both date and time.');
                 }
-            } else {
-                alert('Please select both date and time.');
+            } catch (error) {
+                errorPopup.textContent = error.message;
+                errorPopup.style.display = 'block';
             }
         }
     </script>
 </body>
 </html>
-
