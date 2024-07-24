@@ -94,8 +94,10 @@
                     // Pass the selected date and time back to the Telegram bot
                     // Telegram Web Apps provide a way to pass data back using `window.Telegram.WebApp`
                     if (window.Telegram.WebApp) {
-                        window.Telegram.WebApp.close(); // Close the web app
                         window.Telegram.WebApp.sendData(dateTime); // Send data back to the bot
+                        setTimeout(() => {
+                            window.Telegram.WebApp.close(); // Close the web app after sending data
+                        }, 100); // Delay to ensure data is sent
                     } else {
                         throw new Error('Telegram WebApp API not found. Date and time cannot be sent.');
                     }
