@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Date & Time Picker</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             height: 100vh;
             background-color: #f0f0f0;
             margin: 0;
+            padding-top: 100px;
         }
         .container {
             background-color: #fff;
@@ -22,7 +24,7 @@
             text-align: center;
             max-width: 400px;
             width: 100%;
-            position: relative; /* Ensure relative positioning for child elements */
+            position: relative;
         }
         .container h2 {
             margin-bottom: 20px;
@@ -59,8 +61,8 @@
             display: none;
             margin-top: 20px;
             width: 100%;
-            position: absolute; /* Position absolutely within the container */
-            bottom: -60px; /* Position below the container */
+            position: absolute;
+            bottom: -60px;
         }
     </style>
 </head>
@@ -68,33 +70,33 @@
     <div class="container">
         <h2>Pick Date & Time</h2>
         <div class="input-group">
-            <label for="date">Date:</label>
-            <input type="date" id="date" name="date">
-        </div>
-        <div class="input-group">
-            <label for="time">Time:</label>
-            <input type="time" id="time" name="time">
+            <label for="datetime">Date & Time:</label>
+            <input type="text" id="datetime" name="datetime">
         </div>
         <button class="submit-btn" onclick="submitDateTime()">Submit</button>
         <div id="error-popup" class="error-popup"></div>
     </div>
     
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
+        // Initialize Flatpickr with options to block past dates and times
+        flatpickr("#datetime", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            minDate: "today", // Block past dates
+            time_24hr: true
+        });
+
         function submitDateTime() {
-            const date = document.getElementById('date').value;
-            const time = document.getElementById('time').value;
+            const datetime = document.getElementById('datetime').value;
             const errorPopup = document.getElementById('error-popup');
 
             try {
-                if (date && time) {
-                    // Combine date and time
-                    const dateTime = date + ' ' + time;
-                    
+                if (datetime) {
                     // Pass the selected date and time back to the Telegram bot
-                    // Telegram Web Apps provide a way to pass data back using `window.Telegram.WebApp`
                     if (window.Telegram.WebApp) {
-                        window.Telegram.WebApp.sendData(dateTime); // Send data back to the bot
+                        window.Telegram.WebApp.sendData(datetime); // Send data back to the bot
                         setTimeout(() => {
                             window.Telegram.WebApp.close(); // Close the web app after sending data
                         }, 100); // Delay to ensure data is sent
