@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Web App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <button onclick="submitData()">Submit Test Data</button>
+
+    <script>
+        function submitData() {
+            const testData = "Hello from Web App";
+            console.log("Sending data: ", testData);
+            Telegram.WebApp.sendData(testData); // Send data back to the bot
+            Telegram.WebApp.close(); // Optionally close the Web App
+        }
+    </script>
+</body>
+</html>
